@@ -1,0 +1,4 @@
+#Thu Oct 01 15:57:18 PKT 2020
+base.0=/Users/eapple/Desktop/flutter_whatsapp_ui/build/app/intermediates/dex/debug/mergeDexDebug/out/classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
