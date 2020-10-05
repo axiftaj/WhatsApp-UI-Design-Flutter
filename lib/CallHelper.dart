@@ -5,7 +5,7 @@ import 'CallItemModel.dart';
 
 class CallHelper {
 
-  static var callList = [CallItemModel("Alice", "Today, 3:39 PM"), CallItemModel("John", "Today, 4:41 PM")];
+  static var callList = [CallItemModel("Kashif", "Today, 2:32 PM"), CallItemModel("Asif", "Today, 6:30 PM")];
 
   static CallItemModel getCallItem(int position) {
     return callList[position];

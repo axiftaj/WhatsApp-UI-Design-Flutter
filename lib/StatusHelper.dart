@@ -4,7 +4,7 @@ import 'package:flutter_whatsapp_ui/StatusItemModel.dart';
 
 class StatusHelper {
 
-  static var statusList = [StatusItemModel("Jane", "Yesterday, 11:21 PM"), StatusItemModel("Jack", "Yesterday, 10:22 PM")];
+  static var statusList = [StatusItemModel("John Snow", "Yesterday, 21:22 PM"), StatusItemModel("GOT", "Yesterday, 09:09 PM")];
 
   static StatusItemModel getStatusItem(int position) {
     return statusList[position];
