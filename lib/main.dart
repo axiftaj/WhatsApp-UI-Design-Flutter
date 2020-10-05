@@ -16,9 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return new MaterialApp(
       title: 'Flutter Demo',
-      theme: new ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeData.dark(),
       home: new MyHomePage(),
       debugShowCheckedModeBanner: false,
     );
@@ -32,8 +30,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage>
     with SingleTickerProviderStateMixin {
-  Color whatsAppGreen = Color.fromRGBO(18, 140, 126, 1.0);
-  Color whatsAppGreenLight = Color.fromRGBO(37, 211, 102, 1.0);
+  // Color whatsAppGreen = Color.fromRGBO(18, 140, 126, 1.0);
+  // Color whatsAppGreenLight = Color.fromRGBO(37, 211, 102, 1.0);
 
   TabController tabController;
   var fabIcon = Icons.message;
@@ -64,8 +62,10 @@ class _MyHomePageState extends State<MyHomePage>
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: new AppBar(
-        title: new Text(
+      backgroundColor: Color(0xff101d25),
+      appBar:  AppBar(
+        backgroundColor: Color(0xff232d36),
+        title:  Text(
           "WhatsApp",
           style: TextStyle(
               color: Colors.white, fontSize: 22.0, fontWeight: FontWeight.w600),
@@ -80,11 +80,14 @@ class _MyHomePageState extends State<MyHomePage>
             child: Icon(Icons.more_vert),
           ),
         ],
-        backgroundColor: whatsAppGreen,
         bottom: TabBar(
+          labelColor: Color(0xff23a695),
           tabs: [
+
             Tab(
-              child: Text("CHATS"),
+              child: Text("CHATS" ,
+
+              ),
             ),
             Tab(
                 child: Text(
@@ -95,7 +98,8 @@ class _MyHomePageState extends State<MyHomePage>
                   "CALLS",
                 )),
           ],
-          indicatorColor: Colors.white,
+          unselectedLabelColor: Color(0xff878e94),
+
           controller: tabController,
         ),
       ),
@@ -111,10 +115,11 @@ class _MyHomePageState extends State<MyHomePage>
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
                       children: <Widget>[
-                        Icon(
-                          Icons.account_circle,
-                          size: 64.0,
-                        ),
+                       CircleAvatar(
+                         radius: 36,
+                         backgroundImage: AssetImage('images/asif.png'),
+
+                       ),
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -128,12 +133,12 @@ class _MyHomePageState extends State<MyHomePage>
                                     Text(
                                       chatItem.name,
                                       style: TextStyle(
-                                          fontWeight: FontWeight.w500,
+                                          color: Color(0xffd6dbdc),
                                           fontSize: 20.0),
                                     ),
                                     Text(
                                       chatItem.messageDate,
-                                      style: TextStyle(color: Colors.black45),
+                                      style: TextStyle(color: Colors.white.withOpacity(0.7)),
                                     ),
                                   ],
                                 ),
@@ -142,7 +147,8 @@ class _MyHomePageState extends State<MyHomePage>
                                   child: Text(
                                     chatItem.mostRecentMessage,
                                     style: TextStyle(
-                                        color: Colors.black45, fontSize: 16.0),
+                                        color: Color(0xff7a8388),
+                                        fontSize: 16.0),
                                   ),
                                 )
                               ],
@@ -168,9 +174,10 @@ class _MyHomePageState extends State<MyHomePage>
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
                       children: <Widget>[
-                        Icon(
-                          Icons.account_circle,
-                          size: 64.0,
+                        CircleAvatar(
+                          radius: 36,
+                          backgroundImage: AssetImage('images/asif.png'),
+
                         ),
                         Expanded(
                           child: Padding(
@@ -186,6 +193,8 @@ class _MyHomePageState extends State<MyHomePage>
                                       statusItemModel.name,
                                       style: TextStyle(
                                           fontWeight: FontWeight.w500,
+                                          color: Color(0xff7a8388),
+
                                           fontSize: 20.0),
                                     ),
                                   ],
@@ -195,7 +204,9 @@ class _MyHomePageState extends State<MyHomePage>
                                   child: Text(
                                     statusItemModel.dateTime,
                                     style: TextStyle(
-                                        color: Colors.black45, fontSize: 16.0),
+                                        color: Color(0xff7a8388),
+
+                                        fontSize: 16.0),
                                   ),
                                 )
                               ],
@@ -214,16 +225,16 @@ class _MyHomePageState extends State<MyHomePage>
           ListView.builder(
             itemBuilder: (context, position) {
               CallItemModel callItemModel = CallHelper.getCallItem(position);
-
               return Column(
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
                       children: <Widget>[
-                        Icon(
-                          Icons.account_circle,
-                          size: 64.0,
+                        CircleAvatar(
+                          radius: 36,
+                          backgroundImage: AssetImage('images/asif.png'),
+
                         ),
                         Expanded(
                           child: Padding(
@@ -241,6 +252,8 @@ class _MyHomePageState extends State<MyHomePage>
                                         Text(
                                           callItemModel.name,
                                           style: TextStyle(
+                                              color: Color(0xff7a8388),
+
                                               fontWeight: FontWeight.w500,
                                               fontSize: 20.0),
                                         ),
@@ -251,12 +264,14 @@ class _MyHomePageState extends State<MyHomePage>
                                       child: Text(
                                         callItemModel.dateTime,
                                         style: TextStyle(
-                                            color: Colors.black45, fontSize: 16.0),
+                                            color: Color(0xff7a8388),
+
+                                            fontSize: 16.0),
                                       ),
                                     ),
                                   ],
                                 ),
-                                Icon(Icons.call, color: whatsAppGreen,)
+                                Icon(Icons.call , color: Color(0xff00b09c),)
                               ],
                             ),
                           ),
@@ -272,10 +287,10 @@ class _MyHomePageState extends State<MyHomePage>
           ),
         ],
       ),
+
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         child: Icon(fabIcon),
-        backgroundColor: whatsAppGreenLight,
       ),
     );
   }

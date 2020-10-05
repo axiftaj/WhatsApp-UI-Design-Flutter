@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/eapple/Desktop/flutter_whatsapp_ui/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values-am/values-am.xml",
+            "outputFile": "/Users/eapple/Documents/GitHub/WhatsApp-UI-Design-Flutter/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values-am/values-am.xml",
             "map": [
                 {
                     "source": "/Users/eapple/.gradle/caches/transforms-2/files-2.1/6b399c2363bb098ebde1725d903cbda0/core-1.1.0/res/values-am/values-am.xml",
