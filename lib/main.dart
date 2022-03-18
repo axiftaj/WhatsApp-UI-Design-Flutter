@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-
-import 'CallHelper.dart';
+import 'package:provider/provider.dart';
+import 'package:whatsapp/call_helper.dart';
+import 'package:whatsapp/chat_screen.dart';
+import 'package:whatsapp/setting_screen.dart';
+import 'package:whatsapp/theme_changer.dart';
 import 'CallItemModel.dart';
 import 'ChatHelper.dart';
 import 'ChatItemModel.dart';
@@ -14,11 +17,27 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData.dark(),
-      home: new MyHomePage(),
-      debugShowCheckedModeBanner: false,
+
+    return ChangeNotifierProvider<ThemeChanger>(
+        create: (_) => ThemeChanger(),
+        child: Builder(
+        builder: (BuildContext context) {
+          final themeChanger = Provider.of<ThemeChanger>(context);
+          return  MaterialApp(
+            title: 'Flutter Demo',
+            home:  MyHomePage(),
+            themeMode: themeChanger.themeMode,
+            theme: ThemeData(
+              brightness: Brightness.light,
+              primarySwatch: Colors.teal
+            ),
+            darkTheme: ThemeData(
+              brightness: Brightness.dark,
+            ),
+            debugShowCheckedModeBanner: false,
+          );
+
+        })
     );
   }
 }
@@ -33,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage>
   // Color whatsAppGreen = Color.fromRGBO(18, 140, 126, 1.0);
   // Color whatsAppGreenLight = Color.fromRGBO(37, 211, 102, 1.0);
 
-  TabController tabController;
+  late TabController tabController;
   var fabIcon = Icons.message;
 
   @override
@@ -41,18 +60,21 @@ class _MyHomePageState extends State<MyHomePage>
     // TODO: implement initState
     super.initState();
 
-    tabController = TabController(vsync: this, length: 3)
+    tabController = TabController(vsync: this, length: 4)
       ..addListener(() {
         setState(() {
           switch (tabController.index) {
             case 0:
-              fabIcon = Icons.message;
+              fabIcon = Icons.camera_alt_outlined;
               break;
             case 1:
               fabIcon = Icons.camera_enhance;
               break;
             case 2:
               fabIcon = Icons.call;
+              break;
+            case 2:
+              fabIcon = Icons.message;
               break;
           }
         });
@@ -61,29 +83,45 @@ class _MyHomePageState extends State<MyHomePage>
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      backgroundColor: Color(0xff101d25),
+    return   Scaffold(
       appBar:  AppBar(
-        backgroundColor: Color(0xff232d36),
-        title:  Text(
+        title:  const Text(
           "WhatsApp",
-          style: TextStyle(
-              color: Colors.white, fontSize: 22.0, fontWeight: FontWeight.w600),
         ),
-        actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(right: 20.0),
+        actions:  <Widget>  [
+
+           Padding(
+            padding:  EdgeInsets.only(right: 20.0),
             child: Icon(Icons.search),
           ),
-          Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: Icon(Icons.more_vert),
+          PopupMenuButton(
+            enabled: true,
+              icon: Icon(Icons.more_vert_outlined),
+              itemBuilder: (context) => [
+                const PopupMenuItem(
+                  child: Text("First"),
+                  value: 1,
+                ),
+                const PopupMenuItem(
+                  child: Text("First") ,
+                  value: 2,
+                ),
+                 PopupMenuItem(
+                  child: InkWell(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => SettingScreen()));
+                      },
+                      child: Text("Setting")) ,
+                  value: 2,
+                )
+              ]
           ),
-        ],
-        bottom: TabBar(
-          labelColor: Color(0xff23a695),
-          tabs: [
 
+        ],
+        bottom:  TabBar(
+          tabs: const [
+            Tab(
+                child: Icon(Icons.camera_alt)),
             Tab(
               child: Text("CHATS" ,
 
@@ -97,8 +135,8 @@ class _MyHomePageState extends State<MyHomePage>
                 child: Text(
                   "CALLS",
                 )),
+
           ],
-          unselectedLabelColor: Color(0xff878e94),
 
           controller: tabController,
         ),
@@ -106,57 +144,35 @@ class _MyHomePageState extends State<MyHomePage>
       body: TabBarView(
         controller: tabController,
         children: [
+          Icon(Icons.camera_alt),
           ListView.builder(
             itemBuilder: (context, position) {
               ChatItemModel chatItem = ChatHelper.getChatItem(position);
               return Column(
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: <Widget>[
-                       CircleAvatar(
-                         radius: 36,
-                         backgroundImage: AssetImage('images/asif.png'),
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ChatScreen()));
+                    },
+                    child: ListTile(
+                      leading: const CircleAvatar(
+                        radius: 28,
+                        backgroundImage: AssetImage('images/asif.png'),
+                      ),
+                      title:  Text(
+                        chatItem.name,
+                      ),
+                      subtitle: Text(
+                        chatItem.mostRecentMessage,
 
-                       ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Text(
-                                      chatItem.name,
-                                      style: TextStyle(
-                                          color: Color(0xffd6dbdc),
-                                          fontSize: 20.0),
-                                    ),
-                                    Text(
-                                      chatItem.messageDate,
-                                      style: TextStyle(color: Colors.white.withOpacity(0.7)),
-                                    ),
-                                  ],
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 2.0),
-                                  child: Text(
-                                    chatItem.mostRecentMessage,
-                                    style: TextStyle(
-                                        color: Color(0xff7a8388),
-                                        fontSize: 16.0),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
+                      ) ,
+                      trailing:Padding(
+                      padding: const EdgeInsets.only(top: 2.0),
+                        child: Text(
+                          chatItem.messageDate,
+                        )  ,
+
+                    ),),
                   ),
                   Divider(),
                 ],
@@ -170,53 +186,19 @@ class _MyHomePageState extends State<MyHomePage>
 
               return Column(
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: <Widget>[
-                        CircleAvatar(
-                          radius: 36,
-                          backgroundImage: AssetImage('images/asif.png'),
-
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Text(
-                                      statusItemModel.name,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          color: Color(0xff7a8388),
-
-                                          fontSize: 20.0),
-                                    ),
-                                  ],
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 2.0),
-                                  child: Text(
-                                    statusItemModel.dateTime,
-                                    style: TextStyle(
-                                        color: Color(0xff7a8388),
-
-                                        fontSize: 16.0),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        )
-                      ],
+                  ListTile(
+                    leading: const CircleAvatar(
+                      radius: 28,
+                      backgroundImage: AssetImage('images/asif.png'),
                     ),
-                  ),
-                  Divider(),
+                    title:  Text(
+                      statusItemModel.name,
+                    ),
+                    subtitle: Text(
+                      statusItemModel.name+", "+statusItemModel.dateTime,
+                    ) ,
+                   ),
+                  const Divider(),
                 ],
               );
             },
@@ -231,8 +213,8 @@ class _MyHomePageState extends State<MyHomePage>
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
                       children: <Widget>[
-                        CircleAvatar(
-                          radius: 36,
+                        const CircleAvatar(
+                          radius: 28,
                           backgroundImage: AssetImage('images/asif.png'),
 
                         ),
@@ -251,11 +233,7 @@ class _MyHomePageState extends State<MyHomePage>
                                       children: <Widget>[
                                         Text(
                                           callItemModel.name,
-                                          style: TextStyle(
-                                              color: Color(0xff7a8388),
 
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 20.0),
                                         ),
                                       ],
                                     ),
@@ -263,15 +241,13 @@ class _MyHomePageState extends State<MyHomePage>
                                       padding: const EdgeInsets.only(top: 2.0),
                                       child: Text(
                                         callItemModel.dateTime,
-                                        style: TextStyle(
-                                            color: Color(0xff7a8388),
 
-                                            fontSize: 16.0),
                                       ),
                                     ),
                                   ],
                                 ),
                                 Icon(Icons.call , color: Color(0xff00b09c),)
+
                               ],
                             ),
                           ),
@@ -285,6 +261,7 @@ class _MyHomePageState extends State<MyHomePage>
             },
             itemCount: CallHelper.itemCount,
           ),
+
         ],
       ),
 

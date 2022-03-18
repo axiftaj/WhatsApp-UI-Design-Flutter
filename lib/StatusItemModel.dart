@@ -1,4 +1,3 @@
-
 class StatusItemModel {
 
   String name;

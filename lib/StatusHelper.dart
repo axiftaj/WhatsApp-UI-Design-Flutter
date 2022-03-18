@@ -1,6 +1,4 @@
-
-
-import 'package:flutter_whatsapp_ui/StatusItemModel.dart';
+import 'package:whatsapp/StatusItemModel.dart';
 
 class StatusHelper {
 
