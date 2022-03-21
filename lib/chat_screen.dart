@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:whatsapp/model/message_model/message_helper.dart';
+import 'package:whatsapp/model/message_model/message_model.dart';
 
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({Key? key}) : super(key: key);
+
+  final String name, image ;
+  const ChatScreen({Key? key, required this.name , required this.image}) : super(key: key);
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -14,9 +19,12 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       appBar: AppBar(
         title:Row(children: [
-          CircleAvatar(radius: 20),
+          CircleAvatar(
+            radius: 18 ,
+          backgroundImage: NetworkImage(widget.image),
+          ),
           SizedBox(width: 5,),
-          Text('Name')
+          Text(widget.name)
         ],),
         actions: const [
           Icon(Icons.call),
@@ -33,22 +41,25 @@ class _ChatScreenState extends State<ChatScreen> {
           children: [
             Expanded(
               child: ListView.builder(
-                  itemCount: 20,
+                itemCount: MessageHelper.itemCount,
                   itemBuilder: (context, index){
-                return Column(
-                  crossAxisAlignment:  index/ 2 != 0  ?  CrossAxisAlignment.end  : CrossAxisAlignment.start,
-                  children: [
-                    MessageBubble(
-                      index: index,
-                      message: 'Hello everyone',
-                      isSeen: index/ 2 != 0 ? true : false,
-                      isMe: index/ 2 != 0 ? true : false,
-                      time: '23:29',
-                      onPress: () {  }, listLength: 20,
-                    )
-                  ],
-                );
-              }),
+                    MessageItemModel chatItem = MessageHelper.getCHatList(index);
+                    return Column(
+                      crossAxisAlignment:  index% 2 == 0  ?  CrossAxisAlignment.end  : CrossAxisAlignment.start,
+                      children: [
+                        MessageBubble(
+                          index: index,
+                          message: chatItem.name,
+                          isSeen:  false,
+                          isMe: false,
+                          time: chatItem.messageDate,
+                          onPress: () {  },
+                          listLength: MessageHelper.itemCount,
+                          type: chatItem.type,
+                        )
+                      ],
+                    );
+                  }),
             ),
             Container(
               width: double.infinity,
@@ -119,10 +130,12 @@ class MessageBubble extends StatelessWidget {
         required this.index,
         required this.listLength,
         required this.isSeen,
+        required this.type,
+
       });
 
   final bool isMe;
-  final String message;
+  final String message , type;
   final String time;
   final VoidCallback onPress;
   int index ;
@@ -135,22 +148,47 @@ class MessageBubble extends StatelessWidget {
     return  Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5),
       child: Column(
-        crossAxisAlignment: index/2 != 0 ?  CrossAxisAlignment.end  : CrossAxisAlignment.start,
+        crossAxisAlignment: index% 2 == 0 ?  CrossAxisAlignment.end  : CrossAxisAlignment.start,
         children: [
           SizedBox(
             height: 2,
           ),
-          Row(
-            mainAxisAlignment:  index/2 != 0  ? MainAxisAlignment.end : MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.end ,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(time.toString()),
-              InkWell(
+
+          if(type == "msg")
+          Align(
+            alignment: index%2 == 0 ? Alignment.centerRight :  Alignment.centerLeft ,
+            child: InkWell(
+              onTap: onPress,
+              child: Material(
+                elevation: 1,
+                borderRadius:  index%2 == 0  ? BorderRadius.only(
+                    topLeft: Radius.circular(10.0),
+                    bottomLeft: Radius.circular(0),
+                    bottomRight: Radius.circular(10))
+                    :  BorderRadius.only(
+                    topRight: Radius.circular(10.0),
+                    bottomLeft: Radius.circular(10),
+                    bottomRight: Radius.circular(0))
+                ,
+                color: index%2 == 0 ? Colors.teal :  Colors.black.withOpacity(0.5) ,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                  child: Text(
+                    message,
+                    style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 14 , color: Colors.white),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          if(type == "image")
+            Align(
+              alignment: index%2 == 0 ? Alignment.centerRight :  Alignment.centerLeft ,
+              child: InkWell(
                 onTap: onPress,
                 child: Material(
                   elevation: 1,
-                  borderRadius:  index/2 != 0  ? BorderRadius.only(
+                  borderRadius:  index%2 == 0  ? BorderRadius.only(
                       topLeft: Radius.circular(10.0),
                       bottomLeft: Radius.circular(0),
                       bottomRight: Radius.circular(10))
@@ -159,21 +197,13 @@ class MessageBubble extends StatelessWidget {
                       bottomLeft: Radius.circular(10),
                       bottomRight: Radius.circular(0))
                   ,
-                  color: Colors.purple ,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                    child: Text(
-                      message,
-                      style: TextStyle(
-                          color:  Colors.white ,
-                          fontSize: 12.0),
-                    ),
-                  ),
+                  color: index%2 == 0 ? Colors.teal :  Colors.black.withOpacity(0.5) ,
+                  child: Image(image: NetworkImage(message)),
                 ),
               ),
+            ),
+          Text(time.toString() , style: Theme.of(context).textTheme.bodyText1,),
 
-            ],
-          ),
           if(isMe)
             Visibility(
               visible: index == listLength - 1 ? true : false,

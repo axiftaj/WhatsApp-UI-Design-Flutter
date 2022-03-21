@@ -35,6 +35,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   provider:
+  google_fonts: ^2.3.1
 
 dev_dependencies:
   flutter_test:
@@ -75,19 +76,75 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-  - family: Roboto-Bold
-    fonts:
-      - asset: fonts/Roboto-Bold.ttf
-  - family: Roboto-Light
-    fonts:
-      - asset: fonts/Roboto-Light.ttf
-  - family: Roboto-Medium
-    fonts:
-      - asset: fonts/Roboto-Medium.ttf
-  - family: Roboto-Regular
-    fonts:
-      - asset: fonts/Roboto-Regular.ttf
-
+    - family: Averta
+      fonts:
+        - asset: fonts/averta.ttf
+    - family: Regular
+      fonts:
+        - asset: fonts/averta-regular.ttf
+    - family: Italic
+      fonts:
+        - asset: fonts/averta-regularitalic.ttf
+    - family: Bold
+      fonts:
+        - asset: fonts/averta-bold.ttf
+    - family: Bold Italic
+      fonts:
+        - asset: fonts/averta-bolditalic.ttf
+    - family: Extra
+      fonts:
+        - asset: fonts/averta-extrabold.ttf
+    - family: Extra Italic
+      fonts:
+        - asset: fonts/averta-extrabolditalic.ttf
+    - family: Light
+      fonts:
+        - asset: fonts/averta-light.ttf
+    - family: Light Italic
+      fonts:
+        - asset: fonts/averta-lightitalic.ttf
+    - family: Semibold
+      fonts:
+        - asset: fonts/averta-semibold.ttf
+    - family: Semibold Italic
+      fonts:
+        - asset: fonts/averta-semibolditalic.ttf
+    - family: Thin
+      fonts:
+        - asset: fonts/averta-thin.ttf
+    - family: Thin Italic
+      fonts:
+        - asset: fonts/averta-thinitalic.ttf
+    - family: Light
+      fonts:
+        - asset: fonts/averta-light.ttf
+    - family: Light Italic
+      fonts:
+        - asset: fonts/averta-lightitalic.ttf
+    - family: Black
+      fonts:
+        - asset: fonts/averta-black.ttf
+    - family: Black Italic
+      fonts:
+        - asset: fonts/averta-blackitalic.ttf
+    - family: Clight
+      fonts:
+        - asset: fonts/AvertaCY-Light.ttf
+    - family: Cregular
+      fonts:
+        - asset: fonts/AvertaCY-Regular.ttf
+    - family: Csemibold
+      fonts:
+        - asset: fonts/AvertaCY-Semibold.ttf
+    - family: Cbold
+      fonts:
+        - asset: fonts/AvertaDemoPE-ExtraBold.otf
+    - family: Ccutted
+      fonts:
+        - asset: fonts/AvertaDemoPeCuttedDemo-Regular.otf
+    - family: CustomIcon
+      fonts:
+        - asset: fonts/CustomIcon.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

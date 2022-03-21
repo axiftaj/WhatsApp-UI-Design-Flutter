@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:whatsapp/call_helper.dart';
+import 'package:whatsapp/model/call_model/call_helper.dart';
 import 'package:whatsapp/chat_screen.dart';
+import 'package:whatsapp/constand/constants.dart';
 import 'package:whatsapp/setting_screen.dart';
 import 'package:whatsapp/theme_changer.dart';
-import 'CallItemModel.dart';
-import 'ChatHelper.dart';
-import 'ChatItemModel.dart';
-import 'StatusHelper.dart';
-import 'StatusItemModel.dart';
+import 'package:whatsapp/view/calls_view.dart';
+import 'package:whatsapp/view/chat_list_view.dart';
+import 'package:whatsapp/view/status_view.dart';
+import 'model/call_model/CallItemModel.dart';
+import 'model/chat_model/ChatHelper.dart';
+import 'model/chat_model/ChatItemModel.dart';
+import 'model/status_model/StatusHelper.dart';
+import 'model/status_model/StatusItemModel.dart';
 
 void main() {
   runApp(MyApp());
@@ -29,10 +34,32 @@ class MyApp extends StatelessWidget {
             themeMode: themeChanger.themeMode,
             theme: ThemeData(
               brightness: Brightness.light,
-              primarySwatch: Colors.teal
+              primarySwatch: Colors.teal,
+              textTheme: const TextTheme(
+                  headline3: TextStyle(fontFamily: 'Bold', fontSize: 20.0,color: Colors.black ),
+                  headline4: TextStyle(fontFamily: 'Bold', fontSize: 18.0,color: Color(0xff25292B) ),
+                  headline5: TextStyle(fontFamily: Bold,fontSize: 16.0,color: Color(0xff25292B) ),
+                  headline6: TextStyle(fontFamily: Bold, fontSize: 14.0,color: Color(0xff25292B)),
+                  bodyText1: TextStyle(fontFamily: Regular, fontSize: 12.0, color: Color(0xff25292B)),
+                  bodyText2: TextStyle(fontFamily: Regular, fontSize: 10.0, color:Color(0xff25292B)),
+              ),
+                iconTheme: IconThemeData(
+                color: Colors.blue
+          ),
             ),
+
             darkTheme: ThemeData(
               brightness: Brightness.dark,
+                textTheme: const TextTheme(
+                    headline3: TextStyle(fontFamily: 'Bold', fontSize: 20.0,color: Colors.white ),
+                    headline4: TextStyle(fontFamily: 'Bold', fontSize: 18.0,color: Colors.white ),
+                    headline5: TextStyle(fontFamily: Bold,fontSize: 16.0, color: Colors.white),
+                    headline6: TextStyle(fontFamily: Bold, fontSize: 14.0,color: Colors.white),
+                    bodyText1: TextStyle(fontFamily: Regular, fontSize: 12.0, color: Colors.white),
+                    bodyText2: TextStyle(fontFamily: Regular, fontSize: 10.0,color: Colors.white),
+                ),
+          iconTheme: IconThemeData(
+              color: Colors.blue)
             ),
             debugShowCheckedModeBanner: false,
           );
@@ -68,10 +95,10 @@ class _MyHomePageState extends State<MyHomePage>
               fabIcon = Icons.camera_alt_outlined;
               break;
             case 1:
-              fabIcon = Icons.camera_enhance;
+              fabIcon = Icons.chat;
               break;
             case 2:
-              fabIcon = Icons.call;
+              fabIcon = Icons.camera_alt_outlined;
               break;
             case 2:
               fabIcon = Icons.message;
@@ -85,8 +112,9 @@ class _MyHomePageState extends State<MyHomePage>
   Widget build(BuildContext context) {
     return   Scaffold(
       appBar:  AppBar(
-        title:  const Text(
+        title:   Text(
           "WhatsApp",
+          style:   Theme.of(context).textTheme.headline3!.copyWith(color: Colors.white),
         ),
         actions:  <Widget>  [
 
@@ -99,7 +127,7 @@ class _MyHomePageState extends State<MyHomePage>
               icon: Icon(Icons.more_vert_outlined),
               itemBuilder: (context) => [
                 const PopupMenuItem(
-                  child: Text("First"),
+                  child: Text("First" ,  ),
                   value: 1,
                 ),
                 const PopupMenuItem(
@@ -143,125 +171,11 @@ class _MyHomePageState extends State<MyHomePage>
       ),
       body: TabBarView(
         controller: tabController,
-        children: [
+        children: const [
           Icon(Icons.camera_alt),
-          ListView.builder(
-            itemBuilder: (context, position) {
-              ChatItemModel chatItem = ChatHelper.getChatItem(position);
-              return Column(
-                children: <Widget>[
-                  GestureDetector(
-                    onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ChatScreen()));
-                    },
-                    child: ListTile(
-                      leading: const CircleAvatar(
-                        radius: 28,
-                        backgroundImage: AssetImage('images/asif.png'),
-                      ),
-                      title:  Text(
-                        chatItem.name,
-                      ),
-                      subtitle: Text(
-                        chatItem.mostRecentMessage,
-
-                      ) ,
-                      trailing:Padding(
-                      padding: const EdgeInsets.only(top: 2.0),
-                        child: Text(
-                          chatItem.messageDate,
-                        )  ,
-
-                    ),),
-                  ),
-                  Divider(),
-                ],
-              );
-            },
-            itemCount: ChatHelper.itemCount,
-          ),
-          ListView.builder(
-            itemBuilder: (context, position) {
-              StatusItemModel statusItemModel = StatusHelper.getStatusItem(position);
-
-              return Column(
-                children: <Widget>[
-                  ListTile(
-                    leading: const CircleAvatar(
-                      radius: 28,
-                      backgroundImage: AssetImage('images/asif.png'),
-                    ),
-                    title:  Text(
-                      statusItemModel.name,
-                    ),
-                    subtitle: Text(
-                      statusItemModel.name+", "+statusItemModel.dateTime,
-                    ) ,
-                   ),
-                  const Divider(),
-                ],
-              );
-            },
-            itemCount: StatusHelper.itemCount,
-          ),
-          ListView.builder(
-            itemBuilder: (context, position) {
-              CallItemModel callItemModel = CallHelper.getCallItem(position);
-              return Column(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: <Widget>[
-                        const CircleAvatar(
-                          radius: 28,
-                          backgroundImage: AssetImage('images/asif.png'),
-
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Text(
-                                          callItemModel.name,
-
-                                        ),
-                                      ],
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 2.0),
-                                      child: Text(
-                                        callItemModel.dateTime,
-
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Icon(Icons.call , color: Color(0xff00b09c),)
-
-                              ],
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Divider(),
-                ],
-              );
-            },
-            itemCount: CallHelper.itemCount,
-          ),
-
+          ChatListView(),
+          StatusScreen(),
+          CallsView(),
         ],
       ),
 

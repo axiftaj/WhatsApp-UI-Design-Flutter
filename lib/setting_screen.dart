@@ -18,7 +18,7 @@ class _SettingScreenState extends State<SettingScreen> {
     final themeChanger = Provider.of<ThemeChanger>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Dark Theme Demo'),
+        title: Text('Asif Taj Tech'),
       ),
       body: Column(
         children: <Widget>[
@@ -28,14 +28,16 @@ class _SettingScreenState extends State<SettingScreen> {
               crossFadeState: Theme.of(context).brightness == Brightness.light
                   ? CrossFadeState.showFirst
                   : CrossFadeState.showSecond,
-              firstChild: Image.asset(
-                'images/sun.png',
-                width: 200,
-              ),
-              secondChild: Image.asset(
-                'images/moon.png',
-                width: 200,
-              ),
+              firstChild: CircleAvatar(
+                  radius: 50,
+                  backgroundImage: NetworkImage(
+                'https://media-exp1.licdn.com/dms/image/C5603AQFtuW78eNazIw/profile-displayphoto-shrink_800_800/0/1567442703746?e=2147483647&v=beta&t=N5dGxws3xJIhwPM8w_i4dlX8qLmxznmVykPCTccYHj8',
+              )),
+              secondChild: CircleAvatar(
+                radius: 50,
+                backgroundImage: NetworkImage(
+                  'https://media-exp1.licdn.com/dms/image/C5603AQFtuW78eNazIw/profile-displayphoto-shrink_800_800/0/1567442703746?e=2147483647&v=beta&t=N5dGxws3xJIhwPM8w_i4dlX8qLmxznmVykPCTccYHj8',
+                ),),
               duration: Duration(milliseconds: 200),
             ),
           ),
@@ -57,10 +59,6 @@ class _SettingScreenState extends State<SettingScreen> {
             value: ThemeMode.system,
             onChanged: themeChanger.setTheme,
           ),
-          Container(
-            color: Theme.of(context).brightness == Brightness.light ? Colors.red : Colors.black,
-            child: Text('Button'),
-          )
 
         ],
       ),
