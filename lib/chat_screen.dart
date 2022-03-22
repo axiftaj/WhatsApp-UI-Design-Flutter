@@ -49,7 +49,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       children: [
                         MessageBubble(
                           index: index,
-                          message: chatItem.name,
+                          message: chatItem.mostRecentMessage,
                           isSeen:  false,
                           isMe: false,
                           time: chatItem.messageDate,
@@ -61,57 +61,66 @@ class _ChatScreenState extends State<ChatScreen> {
                     );
                   }),
             ),
-            Container(
-              width: double.infinity,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          color: Colors.grey.shade100
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: TextFormField(
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Color(0xff9C9EB9)),
+                                  onChanged: (value) {
+                                  },
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 8.0, horizontal: 0.0),
+                                    hintText: 'Message...',
+                                    hintStyle: TextStyle(
+                                      color: Color(0xff8E8E93),
+                                    ),
+                                    focusedBorder: InputBorder.none,
+                                    enabledBorder: InputBorder.none,
+                                    errorBorder: InputBorder.none,
+                                    disabledBorder: InputBorder.none,
+                                  ),
+                                ),
+                              ),
+                              Icon(Icons.attach_file),
+                              SizedBox(width: 5,),
+                              Icon(Icons.camera_alt),
+                              SizedBox(width: 5,)
 
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: TextFormField(
-                        style: TextStyle(
-                            fontSize: 16,
-                            color: Color(0xff9C9EB9)),
-                        onChanged: (value) {
-                        },
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(
-                              vertical: 8.0, horizontal: 0.0),
-                          hintText: 'Enter message...',
-                          hintStyle: TextStyle(
-                            color: Color(0xff8E8E93),
+                            ],
                           ),
-                          focusedBorder: InputBorder.none,
-                          enabledBorder: InputBorder.none,
-                          errorBorder: InputBorder.none,
-                          disabledBorder: InputBorder.none,
                         ),
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () async {
-                        print('click');
-
-                      },
-                      child: Container(
-                          decoration: BoxDecoration(
-                              color: Colors.black, shape: BoxShape.circle),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Icon(
-                              Icons.send,
-                              size: 19,
-                              color: Colors.white,
-                            ),
-                          )),
-                    )
-                  ],
-                ),
+                  ),
+                  const CircleAvatar(
+                    radius: 20,
+                    child:  Icon(
+                      Icons.mic,
+                      size: 19,
+                      color: Colors.white,
+                    ),
+                  )
+                ],
               ),
             )
+
           ],
         ),
       ),
@@ -154,14 +163,16 @@ class MessageBubble extends StatelessWidget {
             height: 2,
           ),
 
-          if(type == "msg")
+          if(type == "msj")
           Align(
             alignment: index%2 == 0 ? Alignment.centerRight :  Alignment.centerLeft ,
             child: InkWell(
               onTap: onPress,
               child: Material(
                 elevation: 1,
-                borderRadius:  index%2 == 0  ? BorderRadius.only(
+                color: index%2 == 0 ? Colors.teal :  Colors.black.withOpacity(0.5) ,
+
+                borderRadius:  index%2 == 0  ?  BorderRadius.only(
                     topLeft: Radius.circular(10.0),
                     bottomLeft: Radius.circular(0),
                     bottomRight: Radius.circular(10))
@@ -170,12 +181,12 @@ class MessageBubble extends StatelessWidget {
                     bottomLeft: Radius.circular(10),
                     bottomRight: Radius.circular(0))
                 ,
-                color: index%2 == 0 ? Colors.teal :  Colors.black.withOpacity(0.5) ,
+
                 child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                   child: Text(
                     message,
-                    style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 14 , color: Colors.white),
+                    style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 12 , color: Colors.white),
                   ),
                 ),
               ),
@@ -198,17 +209,23 @@ class MessageBubble extends StatelessWidget {
                       bottomRight: Radius.circular(0))
                   ,
                   color: index%2 == 0 ? Colors.teal :  Colors.black.withOpacity(0.5) ,
-                  child: Image(image: NetworkImage(message)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Image(
+                        height: MediaQuery.of(context).size.height * .2,
+                        width: MediaQuery.of(context).size.width * .5,
+                        fit: BoxFit.cover,
+                        image: NetworkImage(message)),
+                  ),
                 ),
               ),
             ),
+
+          SizedBox(
+            height: 2,
+          ),
           Text(time.toString() , style: Theme.of(context).textTheme.bodyText1,),
 
-          if(isMe)
-            Visibility(
-              visible: index == listLength - 1 ? true : false,
-              child: Text( isSeen ? 'seen' : 'Delivered'),
-            ),
           SizedBox(
             height: 4,
           ),
