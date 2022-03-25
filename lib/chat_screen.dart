@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:whatsapp/model/message_model/message_helper.dart';
 import 'package:whatsapp/model/message_model/message_model.dart';
 
@@ -224,7 +223,7 @@ class MessageBubble extends StatelessWidget {
           SizedBox(
             height: 2,
           ),
-          Text(time.toString() , style: Theme.of(context).textTheme.bodyText1,),
+          Text(time.toString() , maxLines: 1, style: Theme.of(context).textTheme.bodyText1,),
 
           SizedBox(
             height: 4,
