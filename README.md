@@ -1,3 +1,10 @@
+
+- [Youtube](https://youtu.be/f-NUpdJ1rEE)
+- [LinkedIn](https://www.linkedin.com/in/axiftaj/)
+- [Facebook Group](https://www.facebook.com/aaxiftaj)
+- - [Buy me coffe](https://www.buymeacoffee.com/axiftaj)
+
+
 ![akhri ](https://user-images.githubusercontent.com/47206155/159860726-2d0e0f30-a5b4-43d9-b813-7df3e25c87df.png)
 
 
